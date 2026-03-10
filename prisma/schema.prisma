@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model requests {
+  id                                 String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  requester_id                       String?         @db.Uuid
+  receiver_id                        String?         @db.Uuid
+  subject                            String          @db.VarChar(255)
+  type                               request_type?
+  scheduled_datetime                 DateTime?       @db.Timestamp(6)
+  status                             request_status? @default(PENDING)
+  created_at                         DateTime?       @default(now()) @db.Timestamp(6)
+  users_requests_receiver_idTousers  users?          @relation("requests_receiver_idTousers", fields: [receiver_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_requests_requester_idTousers users?          @relation("requests_requester_idTousers", fields: [requester_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  study_sessions                     study_sessions?
+}
+
+model study_sessions {
+  id                  String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  request_id          String    @unique @db.Uuid
+  scheduled_datetime  DateTime? @db.Timestamp(6)
+  completed_at        DateTime? @db.Timestamp(6)
+  created_at          DateTime? @default(now()) @db.Timestamp(6)
+  requester_completed Boolean   @default(false)
+  receiver_completed  Boolean   @default(false)
+  requests            requests  @relation(fields: [request_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model users {
+  id                                    String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name                                  String     @db.VarChar(255)
+  email                                 String     @unique @db.VarChar(255)
+  password_hash                         String     @db.VarChar(255)
+  major                                 String?    @db.VarChar(100)
+  education_level                       edu_level?
+  strengths                             String?
+  needs_help_with                       String?
+  description                           String?
+  token_balance                         Int?       @default(0)
+  created_at                            DateTime?  @default(now()) @db.Timestamp(6)
+  profile_image_url                     String?    @db.VarChar(255)
+  requests_requests_receiver_idTousers  requests[] @relation("requests_receiver_idTousers")
+  requests_requests_requester_idTousers requests[] @relation("requests_requester_idTousers")
+}
+
+enum edu_level {
+  MBO
+  HBO
+  WO
+  Master_HBO @map("Master HBO")
+  Master_WO  @map("Master WO")
+}
+
+enum request_status {
+  PENDING
+  DECLINED
+  ACCEPTED
+  CANCELED
+  COMPLETED
+}
+
+enum request_type {
+  REQUEST
+  OFFER
+}
