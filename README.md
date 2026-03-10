@@ -93,21 +93,3 @@ npm run lint        # eslint --fix
 npm run format      # prettier
 npm run test        # unit tests
 ```
-
-## API routes (current)
-
-- **Users**
-  - `GET /users`
-  - `GET /users/:id`
-  - `POST /users`
-  - `PUT /users/:id`
-  - `PUT /users/:id/token`
-  - `DELETE /users/:id`
-  - `POST /users/login-by-name`
-
-- **Requests**
-  - `GET /users/:userId/requests`
-  - `GET /users/:userId/requests/:id`
-  - `POST /users/:userId/requests`
-  - `PUT /users/:userId/requests/:id`
-  - `DELETE /users/:userId/requests/:id`
