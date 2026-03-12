@@ -8,7 +8,7 @@ datasource db {
 }
 
 model requests {
-  id                                 String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                                 String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   requester_id                       String?         @db.Uuid
   receiver_id                        String?         @db.Uuid
   subject                            String          @db.VarChar(255)
@@ -22,7 +22,7 @@ model requests {
 }
 
 model study_sessions {
-  id                  String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   request_id          String    @unique @db.Uuid
   scheduled_datetime  DateTime? @db.Timestamp(6)
   completed_at        DateTime? @db.Timestamp(6)
@@ -33,7 +33,7 @@ model study_sessions {
 }
 
 model users {
-  id                                    String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                                  String     @db.VarChar(255)
   email                                 String     @unique @db.VarChar(255)
   password_hash                         String     @db.VarChar(255)
