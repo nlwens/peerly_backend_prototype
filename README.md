@@ -93,3 +93,10 @@ npm run lint        # eslint --fix
 npm run format      # prettier
 npm run test        # unit tests
 ```
+
+
+## Sample credentials
+|Email |Password |
+|-------|-------|
+|wen@gmail.com |password123 |
+|nhien@gmail.com |passeword123 |
